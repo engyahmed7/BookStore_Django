@@ -1,0 +1,41 @@
+{% extends 'main/base_layout.html' %}
+
+{% block title %}
+  All Books
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <h1 class="mb-4 mt-4 text-center display-5">All Books</h1>
+  <div class="table-responsive">
+    <table class="table table-striped">
+      <thead>
+        <tr>
+          <th scope="col">#</th>
+          <th scope="col">Title</th>
+          <th scope="col">Author</th>
+          <th scope="col">Description</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for book in books %}
+        <tr>
+          <th scope="row">{{ book.id }}</th>
+          <td>{{ book.title }}</td>
+          <td>{{ book.author }}</td>
+          <td>{{ book.description }}</td>
+          <td>
+            <div class="btn-group" role="group">
+              <a class="btn btn-sm btn-info" href="{% url 'bookStore:get' book.id %}">View</a>
+              <a class="btn btn-sm btn-warning" href="{% url 'bookStore:update' book.id %}">Edit</a>
+              <a class="btn btn-sm btn-danger" href="{% url 'bookStore:delete' book.id %}">Delete</a>
+            </div>
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
