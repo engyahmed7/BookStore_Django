@@ -1,22 +1,31 @@
-{% extends 'main/base_layout.html' %} {% block title %} Create Book {% endblock%} 
-
+{% extends 'main/base_layout.html' %} 
+{% block title %}
+    Add New Book 
+{% endblock %} 
 {% block content %}
-<div class="container mt-3 mb-5">
-    <h1 class="mb-2 mt-4 text-center display-5">Edit Book</h1>
-    <form method="POST" action="{% url 'bookStore:update' book.id %}">
-        {% csrf_token %}
-        <div class="mb-3">
-            <label for="title" class="form-label">Title</label>
-            <input type="text" class="form-control" id="title" name="title" value="{{ book.title }}">
+<div class="container mt-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <div class="card shadow">
+        <div class="card-body">
+          <h2 class="card-title text-center mb-4">Add New Book</h2>
+          <form
+            method="POST"
+            action="{% url 'bookStore:update' pk %}">
+            {% csrf_token %}
+             {{ form.as_p }}
+            <div class="d-grid">
+              <button
+                type="submit"
+                class="btn btn-primary btn-block">
+                Edit Book
+              </button>
+            </div>
+          </form>
         </div>
-        <div class="mb-3">
-            <label for="author" class="form-label">Author</label>
-            <input type="text" class="form-control" id="author" name="author" value="{{ book.author }}">
-        </div>
-        <div class="mb-3">
-            <label for="description" class="form-label">Description</label>
-            <textarea class="form-control" id="description" name="description" rows="3">{{ book.description }}</textarea>
-        </div>
-        <button type="submit" class="btn btn-primary">Edit Book</button>
-    </form>
+      </div>
+    </div>
+  </div>
+</div>
+
 {% endblock %}

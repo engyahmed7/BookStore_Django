@@ -1,33 +1,96 @@
-{% extends 'main/base_layout.html' %}
-
-{% block title %}
-  Add New Book
-{% endblock %}
-
-{% block content %}
+{% extends 'main/base_layout.html' %} {% block title %} Add New Book {% endblock %} {% block content %}
 <div class="container mt-5">
   <div class="row justify-content-center">
     <div class="col-md-6">
       <div class="card shadow">
         <div class="card-body">
           <h2 class="card-title text-center mb-4">Add New Book</h2>
-          <form method="POST" action="{% url 'bookStore:create' %}">
+          <form
+            method="POST"
+            action="{% url 'bookStore:create' %}">
             {% csrf_token %}
+            {{ form.as_p }}
+            <div class="d-grid">
+              <button
+                type="submit"
+                class="btn btn-primary btn-block">
+                Add Book
+              </button>
+            </div>
+            {% comment %}
             <div class="mb-3">
-              <label for="title" class="form-label">Title</label>
-              <input type="text" class="form-control" id="title" name="title" placeholder="Enter book title">
+              <label
+                for="title"
+                class="form-label"
+                >Title</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="title"
+                name="title"
+                placeholder="Enter book title" />
             </div>
             <div class="mb-3">
-              <label for="author" class="form-label">Author</label>
-              <input type="text" class="form-control" id="author" name="author" placeholder="Enter author's name">
+              <label
+                for="desc"
+                class="form-label"
+                >Description</label
+              >
+              <textarea
+                class="form-control"
+                id="desc"
+                name="desc"
+                rows="3"
+                placeholder="Enter book description"></textarea>
             </div>
             <div class="mb-3">
-              <label for="description" class="form-label">Description</label>
-              <textarea class="form-control" id="description" name="description" rows="3" placeholder="Enter book description"></textarea>
+              <label
+                for="desc"
+                class="form-label"
+                >Rate</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="rate"
+                name="rate"
+                placeholder="Enter book rate" />
+            </div>
+            <div class="mb-3">
+              <label
+                for="views"
+                class="form-label"
+                >Views</label
+              >
+              <input
+                type="text"
+                class="form-control"
+                id="views"
+                name="views"
+                placeholder="Enter book views" />
+            </div>
+            <div class="mb-3">
+              <label
+                for="published"
+                class="form-label"
+                >published</label
+              >
+              <input
+                type="date"
+                class="form-control"
+                id="published"
+                name="published"
+                placeholder="Enter book published date" />
             </div>
             <div class="d-grid">
-              <button type="submit" class="btn btn-primary btn-block">Add Book</button>
+              <button
+                type="submit"
+                class="btn btn-primary btn-block">
+                Add Book
+              </button>
             </div>
+            {% endcomment %}
           </form>
         </div>
       </div>

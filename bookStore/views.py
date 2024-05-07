@@ -1,90 +1,41 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
+from .models import BokkStore
+from .forms import BookForm
 
 # Create your views here.
+  
+def index(request):
+    books = BokkStore.objects.all()
+    return render(request, 'index.html', {'books': books})
 
-book_list = [
-            {
-                'id':1,
-                'title': 'Book 1',
-                'author': 'Author 1',
-                'description': 'This is the description for Book 1.',
-            },
-            {
-                'id':2,
-                'title': 'Book 2',
-                'author': 'Author 2',
-                'description': 'This is the description for Book 2.',
-            },
-            {
-                'id':3,
-                'title': 'Book 3',
-                'author': 'Author 3',
-                'description': 'This is the description for Book 3.',
-            },
-            {
-                'id':4,
-                'title': 'Book 4',
-                'author': 'Author 4',
-                'description': 'This is the description for Book 4.',
-            },
-            {
-                'id':5,
-                'title': 'Book 5',
-                'author': 'Author 5',
-                'description': 'This is the description for Book 5.',
-            },
-        ]
+# def create(request):
+#     return render(request, 'create_book.html')
 
-def get_books(request):
-    return render(request, 'all-books.html', {'books': book_list});
-
-
-def get_book(request,*args,**kwargs):
-    book_id = kwargs.get('id')
-    book = None
-    for b in book_list:
-        if b['id'] == book_id:
-            book = b
-            break
-    return render(request, 'book.html', {'book': book});
-
-
-def _get_task(book_id):
-    for book in book_list:
-        if 'id' in book and book['id'] == book_id:
-            return book
-    return None
-    
-
-def edit_book(request,*args,**kwargs):
-
-    book_id = kwargs.get('book_id')
-    book = _get_task(book_id)
+def create(request):
+    form = BookForm()
     if request.method == 'POST':
-        book['title'] = request.POST['title']
-        book['author'] = request.POST['author']
-        book['description'] = request.POST['description']
-        return render(request, 'book.html', {'book': book});
-    else:
-        return render(request, 'edit_book.html', {'book': book});
+       form = BookForm(data=request.POST)
+       if form.is_valid():
+           form.save()
+           return redirect('bookStore:getAll')
+    return render(request, 'create_book.html',{'form': form})
 
-
-def delete_book(request,*args,**kwargs):
-    book_id = kwargs.get('book_id')
-    book = _get_task(book_id)
-    book_list.remove(book)
-    return render(request, 'all-books.html', {'books': book_list});
-    
-
-def create_book(request):
+def update(request,pk):
+    book = BokkStore.objects.get(pk=pk)
+    form = BookForm(instance=book)
     if request.method == 'POST':
-        book = {
-            'id': len(book_list) + 1,
-            'title': request.POST['title'],
-            'author': request.POST['author'],
-            'description': request.POST['description']
-        }
-        book_list.append(book)
-        return render(request, 'all-books.html', {'books': book_list});
-    else:
-        return render(request, 'create_book.html')
+       form = BookForm(data=request.POST, instance=book)
+       if form.is_valid():
+           form.save()
+           return redirect('bookStore:getAll')
+    return render(request, 'edit_book.html',{'form': form , 'pk': pk})
+
+
+def show(request , pk):
+    book=BokkStore.objects.get(pk=pk)
+    return render(request, 'book.html', {'book': book})
+
+def destroy(request,pk):
+    book=BokkStore.objects.get(pk=pk)
+    book.delete()
+    return redirect('bookStore:getAll')
